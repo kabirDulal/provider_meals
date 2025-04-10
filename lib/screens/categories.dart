@@ -6,19 +6,25 @@ import 'package:meals/models/category.dart';
 import 'package:meals/models/meal.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key, required this.onToggleFavouriteMeal, required this.availabeMeals});
-  final void Function(Meal meal) onToggleFavouriteMeal;
+  const CategoriesScreen({super.key, required this.availabeMeals});
+
   final List<Meal> availabeMeals;
-void _selectCategory(BuildContext context, Category category){
-  final filteredMeals = availabeMeals.where((meal)=> meal.categories.contains(category.id)).toList();
-  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>
-   MealsScreen(title: category.title, meals: filteredMeals, onToggleFavouriteMeal: onToggleFavouriteMeal,)
-  ));
-}
+  void _selectCategory(BuildContext context, Category category) {
+    final filteredMeals = availabeMeals
+        .where((meal) => meal.categories.contains(category.id))
+        .toList();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (ctx) => MealsScreen(
+                  title: category.title,
+                  meals: filteredMeals,
+                )));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(     
+    return Scaffold(
       body: GridView(
         padding: const EdgeInsets.all(24),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -29,9 +35,12 @@ void _selectCategory(BuildContext context, Category category){
         ),
         children: [
           for (final category in availableCategories)
-            CategoryGridItem(category: category, onSelectCategory: (){
-              _selectCategory(context, category);
-            },),
+            CategoryGridItem(
+              category: category,
+              onSelectCategory: () {
+                _selectCategory(context, category);
+              },
+            ),
         ],
       ),
     );
