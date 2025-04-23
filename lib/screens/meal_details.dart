@@ -8,9 +8,10 @@ class MealDetails extends ConsumerWidget {
     super.key,
     required this.meal,
   });
-  final Meal meal;
+  final Meal meal;  
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {    
+    final isFavourite = ref.watch(favrouiteMealProvider).contains(meal);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -41,9 +42,11 @@ class MealDetails extends ConsumerWidget {
                           color: Colors.white,
                         ),
                       )),
-                );
+                );               
               },
-              icon: const Icon(Icons.star))
+              icon: const Icon(Icons.star,),
+              color: isFavourite ? Colors.amber : Theme.of(context).colorScheme.onSurface,
+              )
         ],
         backgroundColor: Theme.of(context).colorScheme.onSecondary,
       ),
