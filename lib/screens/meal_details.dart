@@ -44,8 +44,18 @@ class MealDetails extends ConsumerWidget {
                       )),
                 );               
               },
-              icon: const Icon(Icons.star,),
-              color: isFavourite ? Colors.amber : Theme.of(context).colorScheme.onSurface,
+              icon: AnimatedSwitcher(duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation){
+                return RotationTransition(
+                  turns: Tween<double>(
+                    begin: 0.8,
+                    end: 1
+                  ).animate(animation), 
+                  child: child);
+              },
+              child: Icon(Icons.star,
+              color: isFavourite ? Colors.amber : Theme.of(context).colorScheme.onSurface, key: ValueKey(isFavourite),),
+              ) 
               )
         ],
         backgroundColor: Theme.of(context).colorScheme.onSecondary,
@@ -57,10 +67,13 @@ class MealDetails extends ConsumerWidget {
             margin: const EdgeInsets.all(12),
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image.network(
-                  meal.imageUrl,
-                  height: 300,
-                  fit: BoxFit.cover,
+                child: Hero(
+                  tag: meal.id,
+                  child: Image.network(
+                    meal.imageUrl,
+                    height: 300,
+                    fit: BoxFit.cover,
+                  ),
                 )),
           ),
           const SizedBox(

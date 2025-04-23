@@ -51,29 +51,37 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: AnimatedBuilder(
-            animation: _animationController,
-            child: GridView(
-              padding: const EdgeInsets.all(24),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 3 / 2,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 20,
+      body: AnimatedBuilder(
+        animation: _animationController,
+        child: GridView(
+          padding: const EdgeInsets.all(24),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 3 / 2,
+            mainAxisSpacing: 20,
+            crossAxisSpacing: 20,
+          ),
+          children: [
+            for (final category in availableCategories)
+              CategoryGridItem(
+                category: category,
+                onSelectCategory: () {
+                  _selectCategory(context, category);
+                },
               ),
-              children: [
-                for (final category in availableCategories)
-                  CategoryGridItem(
-                    category: category,
-                    onSelectCategory: () {
-                      _selectCategory(context, category);
-                    },
-                  ),
-              ],
-            ),
-            builder: (context, child) => SlideTransition(position: _animationController.drive(Tween(
-              begin: const Offset(0, 0.3),
-              end: const Offset(0, 0),
-            ),), child: child,),),);
+          ],
+        ),
+        builder: (context, child) => SlideTransition(
+          position: Tween(
+            begin: const Offset(0, 0.3),
+            end: const Offset(0, 0),
+          ).animate(
+            CurvedAnimation(
+                parent: _animationController, curve: Curves.easeInOutBack),
+          ),
+          child: child,
+        ),
+      ),
+    );
   }
 }
